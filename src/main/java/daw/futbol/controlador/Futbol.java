@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import daw.futbol.modelo.Jugador;
 import daw.futbol.modelo.JugadorDAO;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 
 /**
  *
@@ -33,6 +35,10 @@ public class Futbol extends HttpServlet {
         // Se establece el tipo de contenido a enviar en la respuesta
         response.setContentType("text/html;charset=UTF-8");
 
+        // ServletContext permite acceder a la información asociada 
+        // a la aplicación
+        ServletContext contexto = request.getServletContext();
+        
         // Obtengo la sesion de la petición HTTP, si existe. 
         // Con true, si no está creada se crea
         HttpSession sesion = request.getSession(true);
@@ -71,16 +77,24 @@ public class Futbol extends HttpServlet {
             // Obtengo la lista actualizada de jugadores, ordenada por votos
             lista = JugadorDAO.consultarJugadores(true);
 
-            // Expresión lambda para imprimir los elementos de la lista
+            // Expresión lambda para imprimir los elementos de la lista por consola
             lista.forEach(System.out::println);
 
-            // Una vez realizada la operación, redirigimos a la vista
-            //response.sendRedirect(response.encodeRedirectURL("TablaVotos.jsp"));
-            response.sendRedirect("TablaVotos.jsp");
+            // Queremos que nuestro servlet invoque a un recurso de nuestra aplicación
+            // llamado TablaVotos.jsp (una vista). Usamos RequestDipatcher para
+            // encapsular el recurso al que vamos a ser redirigidos
+            RequestDispatcher despachador = contexto.getRequestDispatcher("/TablaVotos.jsp");
+            // El método fordward permite hacer la redirección a otro servlet o a una
+            // vista y se pasa tanto el objeto petición como el objeto respuesta
+            // para que el nuevo recurso pueda hacer uso de ellos
+            despachador.forward(request, response);
 
         }
         else{
-            response.sendRedirect("./index.html");
+           
+            RequestDispatcher despachador = contexto.getRequestDispatcher("/index.html");
+            despachador.forward(request, response);
+            
         }
     }
 
