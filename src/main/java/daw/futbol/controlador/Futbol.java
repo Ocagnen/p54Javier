@@ -92,7 +92,7 @@ public class Futbol extends HttpServlet {
         }
         else{
            
-            RequestDispatcher despachador = contexto.getRequestDispatcher("/index.html");
+            RequestDispatcher despachador = contexto.getRequestDispatcher("/index.jsp");
             despachador.forward(request, response);
             
         }

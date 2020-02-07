@@ -44,7 +44,7 @@
             
         </table>
             
-         <button type="button" onclick="location.href = './index.html'">Volver</button>   
+         <button type="button" onclick="location.href = './index.jsp'">Volver</button>   
  
     </body>
 </html>
